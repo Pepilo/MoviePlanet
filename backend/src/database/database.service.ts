@@ -43,4 +43,20 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
             throw new Error('Connection to DB failed.')
         }
     }
+
+    // Funtion used to run queries
+    async runQuery(query: string) {
+        try{
+            if(!this.pool) {
+                await this.connectToDatabase();
+            }
+
+            const result = await this.pool.query(query);
+
+            return result;
+
+        } catch (err) {
+            throw new Error ('Failed to run query.')
+        }
+    }
 }
