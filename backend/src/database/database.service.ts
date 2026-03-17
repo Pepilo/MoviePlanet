@@ -32,7 +32,7 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
         }
     }
 
-    // Function called to connect to DB
+    // Connecting to DB
     private async connectToDatabase(): Promise <void> {
         try{
             if (!this.pool) {
@@ -44,14 +44,14 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
         }
     }
 
-    // Funtion used to run queries
-    async runQuery(query: string) {
+    // Running a query
+    async runQuery(query: string, params?: any) {
         try{
             if(!this.pool) {
                 await this.connectToDatabase();
             }
 
-            const result = await this.pool.query(query);
+            const result = await this.pool.query(query, params);
 
             return result;
 
