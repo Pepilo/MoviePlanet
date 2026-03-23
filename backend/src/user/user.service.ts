@@ -41,7 +41,7 @@ export class UserService {
 
             await this.databaseService.runQuery(query, [login, password]);
 
-            return {message : 'User successfully created.'}
+            return {message : 'User successfully created.'};
 
         } catch (err) {
             throw new Error('Failed to create user.');
@@ -52,14 +52,14 @@ export class UserService {
     async updateUserById(id: string, password: string) {
         try {
 
-            const query = `UPDATE users SET password = $2 WHERE id = $1`
+            const query = `UPDATE users SET password = $2 WHERE id = $1`;
 
             await this.databaseService.runQuery(query, [id, password]);
 
             return this.getUserById(id);
 
         } catch(err) {
-            throw new Error('Failed to update user.')
+            throw new Error('Failed to update user.');
         }
     }
 
@@ -71,10 +71,10 @@ export class UserService {
 
             await this.databaseService.runQuery(query, [id]);
 
-            return {message : 'User successfully deleted.'}
+            return {message : 'User successfully deleted.'};
 
         } catch (err){
-            throw new Error('Failed to delete user.')
+            throw new Error('Failed to delete user.');
         }
     }
 }
