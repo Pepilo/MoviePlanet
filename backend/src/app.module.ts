@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { MovieModule } from './movie/movie.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { MovieModule } from './movie/movie.module';
     DatabaseModule,
     UserModule,
     MovieModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
