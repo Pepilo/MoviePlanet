@@ -20,9 +20,10 @@ export class MovieService {
         }
     }
 
+    // Get a movie from movies table by id
     async getMovieById(id : string) {
         try{
-            const query = `SELECT name, real, synopsis FROM movie WHERE id = $1`;
+            const query = `SELECT name, real, synopsis FROM movies WHERE id = $1`;
 
             const result = await this.databaseService.runQuery(query, [id]);
 
@@ -33,9 +34,10 @@ export class MovieService {
         }
     }
 
+    // Add a movie in movies table
     async createMovie(name: string, real: string, synopsis: string) {
         try {
-            const query = `INSERT INTO movie (name, real, synopsis) VALUES ($1, $2, $3)`;
+            const query = `INSERT INTO movies (name, real, synopsis) VALUES ($1, $2, $3)`;
 
             await this.databaseService.runQuery(query, [name, real, synopsis]);
 
@@ -46,6 +48,7 @@ export class MovieService {
         }
     }
 
+    // Update a movie in movies table by id
     async updateMovieById(id: string, synopsis: string) {
         try {
             const query = `UPDATE movies SET synopsis = $2 WHERE id = $1`;
@@ -59,9 +62,10 @@ export class MovieService {
         }
     }
 
+    // Delete a movie in movies table by id
     async deleteMovieById(id: string) {
         try {
-            const query = `DELETE FROM movie WHERE id = $1`;
+            const query = `DELETE FROM movies WHERE id = $1`;
 
             await this.databaseService.runQuery(query, [id]);
 

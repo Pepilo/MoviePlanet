@@ -11,7 +11,7 @@ export class CommentsController {
         return this.commentsService.getComments();
     }
 
-    @Get(':/id')
+    @Get('/:id')
     getCommentById(@Param('id') id : string) {
         return this.commentsService.getCommentById(id);
     }
@@ -21,12 +21,12 @@ export class CommentsController {
         return this.commentsService.createComment(body.id_user, body.id_movie, body.content);
     }
 
-    @Put(':/id')
+    @Put('/:id')
     updateComment(@Param('id') id : string, @Body() body : {content : string}) {
         return this.commentsService.updateComments(id, body.content);
     }
 
-    @Delete(':/id')
+    @Delete('/:id')
     deleteComment(@Param('id') id : string) {
         return this.commentsService.deleteComments(id);
     }

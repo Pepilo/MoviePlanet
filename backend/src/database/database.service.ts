@@ -56,7 +56,9 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
             return result;
 
         } catch (err) {
-            throw new Error ('Failed to run query.')
+            console.log(err);
+            throw err;
+            // throw new Error ('Failed to run query.');
         }
     }
 }

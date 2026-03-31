@@ -6,6 +6,7 @@ export class CommentsService {
 
     constructor(private readonly databaseService : DatabaseService) {};
 
+    // Get comments from comments table 
     async getComments() {
         try {
 
@@ -20,6 +21,7 @@ export class CommentsService {
         }
     }
 
+    // Get a comment from comments table by id
     async getCommentById(id : string) {
         try {
 
@@ -34,6 +36,7 @@ export class CommentsService {
         }
     }
 
+    // Add a comment in comments table
     async createComment(id_user : number, id_movie : number, content : string) {
         try {
 
@@ -48,6 +51,7 @@ export class CommentsService {
         }
     }
 
+    // Update a comment from comments table by id
     async updateComments(id : string, content : string) {
         try {
 
@@ -62,6 +66,7 @@ export class CommentsService {
         }
     }
 
+    // Delete a comment in comments table by id
     async deleteComments(id : string) {
         try {
 
