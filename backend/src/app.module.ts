@@ -6,6 +6,9 @@ import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { MovieModule } from './movie/movie.module';
 import { CommentsModule } from './comments/comments.module';
+import { AuthService } from './auth/auth.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,9 +20,10 @@ import { CommentsModule } from './comments/comments.module';
     UserModule,
     MovieModule,
     CommentsModule,
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, AuthController],
+  providers: [AppService, AuthService],
 })
 
 export class AppModule {}
