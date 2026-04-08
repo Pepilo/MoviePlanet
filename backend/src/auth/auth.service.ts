@@ -1,21 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { hash, compare } from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 export type AuthBody = {login : string, password : string};
 
 @Injectable()
 export class AuthService {
 
-    constructor(private readonly databaseService: DatabaseService) {}
+    constructor(private readonly databaseService: DatabaseService, private readonly jwtService : JwtService) {}
 
     async loginUser({authBody} : {authBody : AuthBody}) {
 
         const {login, password} = authBody;
 
-        const hashedPassword = await this.hashPassword(password);
-
-        console.log({ hashedPassword, password });
+        // const hashedPassword = await this.hashPassword(password);
 
         const query = `SELECT * FROM users WHERE login = $1`;
 
@@ -29,7 +28,11 @@ export class AuthService {
 
         const isPasswordValid = await this.isPasswordValid(password, existingUser.password);
 
-        return existingUser;
+        if(!existingUser) {
+            throw new Error("Mot de passe invalide.");
+        }
+
+        return await this.authenticateUser(existingUser.id);
     }
 
     private async hashPassword(password : string) {
@@ -44,5 +47,12 @@ export class AuthService {
         const isPasswordValid = await compare(password, hashedPassword);
 
         return isPasswordValid;
+    }
+
+    private async authenticateUser(userId : string){
+        const payload = {userId};
+        return {
+            access_token: await this.jwtService.signAsync(payload),
+        };
     }
 }
