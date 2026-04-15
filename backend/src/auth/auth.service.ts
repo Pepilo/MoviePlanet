@@ -14,8 +14,6 @@ export class AuthService {
 
         const {login, password} = authBody;
 
-        // const hashedPassword = await this.hashPassword(password);
-
         const query = `SELECT * FROM users WHERE login = $1`;
 
         const result = await this.databaseService.runQuery(query, [login]);
@@ -28,11 +26,11 @@ export class AuthService {
 
         const isPasswordValid = await this.isPasswordValid(password, existingUser.password);
 
-        if(!existingUser) {
+        if(!isPasswordValid) {
             throw new Error("Mot de passe invalide.");
         }
 
-        return await this.authenticateUser(existingUser.id);
+        return this.authenticateUser(existingUser.id);
     }
 
     private async hashPassword(password : string) {
@@ -52,7 +50,7 @@ export class AuthService {
     private async authenticateUser(userId : string){
         const payload = {userId};
         return {
-            access_token: await this.jwtService.signAsync(payload),
+            access_token: await this.jwtService.sign(payload),
         };
     }
 }
