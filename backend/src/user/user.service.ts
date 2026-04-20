@@ -33,21 +33,6 @@ export class UserService {
         }
     }
 
-    //Add a user in users table
-    async createUsers(login: string, password: string) {
-        try {
-
-            const query = `INSERT INTO users (login, password) VALUES ($1, $2)`;
-
-            await this.databaseService.runQuery(query, [login, password]);
-
-            return {message : 'User successfully created.'};
-
-        } catch (err) {
-            throw new Error('Failed to create user.');
-        }
-    }
-
     //Update a user from users table by id
     async updateUserById(id: string, password: string) {
         try {

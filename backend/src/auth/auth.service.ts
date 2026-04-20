@@ -33,6 +33,39 @@ export class AuthService {
         return this.authenticateUser(existingUser.id);
     }
 
+    //Add a user in users table
+    async createUsers(login: string, password: string) {
+        try {
+
+            const checkQuery = `SELECT * FROM users WHERE login = $1`;
+
+            const checkResult = await this.databaseService.runQuery(checkQuery, [login]);
+
+            const existingUser = checkResult.rows?.[0];
+
+            if(existingUser) {
+                return {message : (`L'utilisateur existe déjà.`)};
+            }
+
+            const hashedPassword = await this.hashPassword(password);
+
+            const query = `INSERT INTO users (login, password) VALUES ($1, $2)`;
+
+            await this.databaseService.runQuery(query, [login, hashedPassword]);
+
+            const authQuery = `SELECT id FROM users WHERE login = $1`
+
+            const idResult = await this.databaseService.runQuery(authQuery,[login]);
+
+            const userId = idResult.rows[0].id;
+
+            return this.authenticateUser(userId);
+
+        } catch (err) {
+            throw new Error('Failed to create user.');
+        }
+    }
+
     private async hashPassword(password : string) {
 
         const hashedPassword = await hash(password, 10);
