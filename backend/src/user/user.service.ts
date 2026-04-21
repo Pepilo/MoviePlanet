@@ -5,10 +5,10 @@ export class UserService {
 
     constructor(private readonly databaseService : DatabaseService) {};
 
-    // Get users from users table
+    // Get users from movieplanetusers table
     async getUsers() {
         try {
-            const query = `SELECT login FROM users`;
+            const query = `SELECT login FROM movieplanetusers`;
 
             const result = await this.databaseService.runQuery(query);
 
@@ -19,10 +19,10 @@ export class UserService {
         }
     }
 
-    // Get a user from users table by id
-    async getUserById(id: string) {
+    // Get a user from movieplanetusers table by id
+    async getUserById(id: number) {
         try {
-            const query = `SELECT login FROM users WHERE id = $1`;
+            const query = `SELECT login FROM movieplanetusers WHERE id = $1`;
 
             const result = await this.databaseService.runQuery(query, [id]);
 
@@ -33,11 +33,11 @@ export class UserService {
         }
     }
 
-    //Update a user from users table by id
-    async updateUserById(id: string, password: string) {
+    //Update a user from movieplanetusers table by id
+    async updateUserById(id: number, password: string) {
         try {
 
-            const query = `UPDATE users SET password = $2 WHERE id = $1`;
+            const query = `UPDATE movieplanetusers SET password = $2 WHERE id = $1`;
 
             await this.databaseService.runQuery(query, [id, password]);
 
@@ -48,15 +48,15 @@ export class UserService {
         }
     }
 
-    //Delete a user in users table by id
-    async deleteUserById(id: string) {
+    //Delete a user from movieplanetusers table by id
+    async deleteUserById(id: number) {
         try{
 
-            const query = `DELETE FROM users WHERE id = $1`;
+            const query = `DELETE FROM movieplanetusers WHERE id = $1`;
 
             await this.databaseService.runQuery(query, [id]);
 
-            return {message : 'User successfully deleted.'};
+            return this.getUsers();;
 
         } catch (err){
             throw new Error('Failed to delete user.');
