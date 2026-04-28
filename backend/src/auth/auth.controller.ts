@@ -8,7 +8,7 @@ import { UserService } from 'src/user/user.service';
 export class AuthController {
 
     constructor (private readonly authService : AuthService, private readonly userService : UserService) {}
-
+    
     @Post('login')
     loginUser(@Body() authBody: AuthBody) {
         return this.authService.loginUser({authBody});
