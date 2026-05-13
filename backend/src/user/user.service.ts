@@ -8,9 +8,9 @@ export class UserService {
     // Create a user in movieplanetusers table
     async createUser(email: string, hashedPassword: string, login: string) {
         try {
-            const query = `INSERT INTO movieplanetusers (email, password, login) VALUES ($1, $2, $3) RETURNING id`;
+            const query = `INSERT INTO movieplanetusers (email, password, login, role) VALUES ($1, $2, $3, $4) RETURNING id`;
 
-            const result = await this.databaseService.runQuery(query, [email, hashedPassword, login]);
+            const result = await this.databaseService.runQuery(query, [email, hashedPassword, login, 'user']);
 
             return result.rows[0];
 
