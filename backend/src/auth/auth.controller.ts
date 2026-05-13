@@ -15,8 +15,8 @@ export class AuthController {
     }
 
     @Post('register')
-    createUser(@Body() body : {email : string, password : string, login : string}) {
-        return this.authService.createUser(body.email, body.password, body.login);
+    registerUser(@Body() body : {email : string, password : string, login : string}) {
+        return this.authService.registerUser(body.email, body.password, body.login);
     }
 
     @UseGuards(JwtAuthGuard)

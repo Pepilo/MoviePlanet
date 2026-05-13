@@ -14,6 +14,6 @@ export class UsersService {
     private readonly apiUrl = environment.apiUrl;
 
     createUser(userDatas: any): Observable<any> {
-        return this.http.post(`${this.apiUrl}/users`, userDatas);
+        return this.http.post(`${this.apiUrl}/auth/register`, userDatas);
     }
 }

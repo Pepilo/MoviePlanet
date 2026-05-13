@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
+import { UserService } from 'src/user/user.service';
 import { hash, compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
@@ -8,7 +9,7 @@ export type AuthBody = {email : string, password : string};
 @Injectable()
 export class AuthService {
 
-    constructor(private readonly databaseService: DatabaseService, private readonly jwtService : JwtService) {}
+    constructor(private readonly databaseService: DatabaseService, private readonly userService: UserService, private readonly jwtService : JwtService) {}
 
     async loginUser({authBody} : {authBody : AuthBody}) {
 
@@ -34,7 +35,7 @@ export class AuthService {
     }
 
     //Add a user in movieplanetusers table
-    async createUser(email: string, password: string, login: string) {
+    async registerUser(email: string, password: string, login: string) {
         try {
 
             const checkQuery = `SELECT * FROM movieplanetusers WHERE email = $1`;
@@ -44,25 +45,17 @@ export class AuthService {
             const existingUser = checkResult.rows?.[0];
 
             if(existingUser) {
-                return {message : ('User already exist.')};
+                return {message : ('A user with this email adress already exist.')};
             }
 
             const hashedPassword = await this.hashPassword(password);
 
-            const query = `INSERT INTO movieplanetusers (email, password, login) VALUES ($1, $2, $3)`;
+            const createdUser = await this.userService.createUser(email, hashedPassword, login);
 
-            await this.databaseService.runQuery(query, [email, hashedPassword, login]);
-
-            const authQuery = `SELECT id FROM movieplanetusers WHERE email = $1`
-
-            const idResult = await this.databaseService.runQuery(authQuery,[email]);
-
-            const userId = idResult.rows[0].id;
-
-            return this.authenticateUser(userId);
+            return this.authenticateUser(createdUser.id);
 
         } catch (err) {
-            throw new Error('Failed to create user.');
+            throw new Error('Failed to register user.');
         }
     }
 

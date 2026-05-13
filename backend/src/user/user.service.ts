@@ -5,6 +5,20 @@ export class UserService {
 
     constructor(private readonly databaseService : DatabaseService) {};
 
+    // Create a user in movieplanetusers table
+    async createUser(email: string, hashedPassword: string, login: string) {
+        try {
+            const query = `INSERT INTO movieplanetusers (email, password, login) VALUES ($1, $2, $3) RETURNING id`;
+
+            const result = await this.databaseService.runQuery(query, [email, hashedPassword, login]);
+
+            return result.rows[0];
+
+        } catch (err) {
+            throw new Error('Failed to create user.');
+        }
+    }
+
     // Get users from movieplanetusers table
     async getUsers() {
         try {
